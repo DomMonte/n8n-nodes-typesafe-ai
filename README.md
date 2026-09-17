@@ -1,46 +1,133 @@
 # n8n-nodes-typesafe-ai
 
-This is an n8n community node. It lets you use _app/service name_ in your n8n workflows.
+An [n8n](https://n8n.io) community node for the [TypeSafe AI](https://typesafe.ai) System One API.
 
-_App/service name_ is _one or two sentences describing the service this node integrates with_.
+TypeSafe's System One models (Jev) answer small, typed questions about your data — yes/no probabilities, one-of-N choices, and scores against ordered levels — with calibrated probabilities your workflow can branch on directly. No prompt engineering, no free-text parsing.
 
-[n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/sustainable-use-license/) workflow automation platform.
-
-[Installation](#installation)
-[Operations](#operations)
-[Credentials](#credentials)
-[Compatibility](#compatibility)
-[Usage](#usage)
-[Resources](#resources)
-[Version history](#version-history)
+- [Installation](#installation)
+- [Credentials](#credentials)
+- [Operations](#operations)
+- [Output reference](#output-reference)
+- [Rate limits and retries](#rate-limits-and-retries)
+- [Resources](#resources)
 
 ## Installation
 
-Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
-
-## Operations
-
-_List the operations supported by your node._
+Follow the [community nodes installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) and install `n8n-nodes-typesafe-ai`.
 
 ## Credentials
 
-_If users need to authenticate with the app/service, provide details here. You should include prerequisites (such as signing up with the service), available authentication methods, and how to set them up._
+Create a **TypeSafe AI API** credential with your API key from the [TypeSafe dashboard](https://typesafe.ai). The key is sent as a `Authorization: Bearer` header. Use the credential's **Test** button to confirm it works (it calls `GET /v1/models`).
 
-## Compatibility
+## Operations
 
-_State the minimum n8n version, as well as which versions you test against. You can also include any known version incompatibility issues._
+All question operations share these fields:
 
-## Usage
+| Field | Description |
+|---|---|
+| **State** | The content to evaluate. Plain text, or a JSON object/array (a chat log, a record, your app's current state). Expressions such as `{{ $json }}` that resolve to an object are sent as JSON. |
+| **Instructions** | The question the model should answer about the state. |
+| **Options → Model** | `jev-latest` by default. Pin a versioned ID such as `jev-1.13.0` if you have tuned thresholds against it. |
+| **Options → State Format** | `Auto` (default) sends JSON when the state parses as an object/array, otherwise text. `Text` and `JSON` force one behaviour. |
+| **Options → Simplify** | On by default. Turn off to receive the raw API response body. |
 
-_This is an optional section. Use it to help users with any difficult or confusing aspects of the node._
+### Question → Ask Yes/No
 
-_By the time users are looking for community nodes, they probably already know n8n basics. But if you expect new users, you can link to the [Try it out](https://docs.n8n.io/try-it-out/) documentation to help them get started._
+Returns the probability that the answer is yes (a *noul*).
+
+- **Criteria** (optional): *True Means* / *False Means* descriptions.
+
+Example — State: `Help! My payouts have been failing for 3 days.` Instructions: `Does this convey urgency?`
+
+```json
+{ "noul": 0.92, "model": "jev-1.13.0", "usage": { "input_tokens": 312, "output_tokens": 48 } }
+```
+
+### Question → Ask Choice
+
+Picks one option from a set you define and returns the full probability distribution plus a confidence value.
+
+- **Options**: one row per option (`Option` key + optional `Description` rubric).
+
+Example — Instructions: `Which team should handle this?` Options: `billing`, `technical`, `sales`
+
+```json
+{
+  "choice": "technical",
+  "probabilities": { "billing": 0.08, "technical": 0.85, "sales": 0.07 },
+  "confidence": 0.82,
+  "model": "jev-1.13.0",
+  "usage": { "input_tokens": 312, "output_tokens": 48 }
+}
+```
+
+### Question → Ask Score
+
+Rates the state against ordered levels (lowest first) and returns a probability-weighted score that can land between levels.
+
+- **Levels**: at least two, ordered from lowest to highest.
+
+Example — Instructions: `How frustrated is the customer?` Levels: `Calm`, `Frustrated`, `Very angry`
+
+```json
+{
+  "score": 1.6,
+  "legend": { "0": "Calm", "1": "Frustrated", "2": "Very angry" },
+  "probabilities": { "0": 0.05, "1": 0.3, "2": 0.65 },
+  "confidence": 0.78,
+  "model": "jev-1.13.0",
+  "usage": { "input_tokens": 312, "output_tokens": 48 }
+}
+```
+
+### Question → Evaluate Questions
+
+Asks several questions about the same state in **one** request — the cheapest and fastest way to use TypeSafe. Define questions with the form (each with an ID, type, instructions and criteria) or paste the `questions` map as JSON exactly as described in the [API reference](https://docs.typesafe.ai/api). For yes/no questions the optional **Criteria** collection holds *True Means* / *False Means*, exactly as in Ask Yes/No.
+
+```json
+{
+  "answers": {
+    "is_urgent": { "type": "noul", "noul": 0.92 },
+    "department": { "type": "choice", "choice": "technical", "probabilities": { "...": 0 }, "confidence": 0.82 }
+  },
+  "model": "jev-1.13.0",
+  "usage": { "input_tokens": 340, "output_tokens": 96 }
+}
+```
+
+### Model → Get Many
+
+Lists the model names and aliases your account can use. One item per model: `{ name, description, release_date }`.
+
+## Output reference
+
+| Operation | Simplified output |
+|---|---|
+| Ask Yes/No | `noul`, `model`, `usage` |
+| Ask Choice | `choice`, `probabilities`, `confidence`, `model`, `usage` |
+| Ask Score | `score`, `legend`, `probabilities`, `confidence`, `model`, `usage` |
+| Evaluate Questions | `answers` (keyed by question ID, each with its `type`), `model`, `usage` |
+| Model → Get Many | `name`, `description`, `release_date` |
+
+With **Simplify** off, every question operation returns the raw body: `{ "model", "answers": { "answer": { ... } }, "usage" }`.
+
+`confidence` (Choice and Score) summarises how concentrated the probability distribution is; see [Confidence](https://docs.typesafe.ai/confidence). A noul near 0.5 means yes and no are about equally likely.
+
+## Rate limits and retries
+
+TypeSafe returns `429 Too Many Requests` or `529 Overloaded` when you exceed your limits or the service is busy. This node does not retry on its own. Enable **Retry On Fail** in the node's settings (with a wait of at least 1 second) so n8n backs off and retries.
+
+## AI Agent tool
+
+The node is marked usable as a tool, so an AI Agent can call it directly. Mark any field with *Let the model define this parameter* to have the agent fill it in.
 
 ## Resources
 
-* [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
-* _Link to app/service documentation._
+- [TypeSafe documentation](https://docs.typesafe.ai)
+- [HTTP API reference](https://docs.typesafe.ai/api)
+- [Question primitives](https://docs.typesafe.ai/primitives)
+- [n8n community nodes documentation](https://docs.n8n.io/integrations/community-nodes/)
 
-## Version history
+## License
 
-_This is another optional section. If your node has multiple versions, include a short description of available versions and what changed, as well as any compatibility impact._
+[MIT](LICENSE.md)
