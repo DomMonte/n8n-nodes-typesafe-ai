@@ -42,7 +42,13 @@ export function parseState(raw: unknown, format: StateFormat): JsonValue {
 		throw new Error("'State' cannot be empty");
 	}
 	if (typeof raw !== 'string') {
-		return format === 'text' ? JSON.stringify(raw) : (raw as JsonValue);
+		if (isObjectOrArray(raw)) {
+			return format === 'text' ? JSON.stringify(raw) : (raw as JsonValue);
+		}
+		if (format === 'json') {
+			throw new Error("'State' must be a JSON object or array when 'State Format' is JSON");
+		}
+		return String(raw);
 	}
 	if (raw.trim() === '') {
 		throw new Error("'State' cannot be empty");
@@ -115,7 +121,7 @@ function buildScore(spec: QuestionSpec, label: string): ScoreQuestion {
 	}
 	const criteria = entries.map((entry) => {
 		if (!nonBlank(entry.level)) {
-			throw new Error(`${label}Every entry in 'Levels' needs a non-empty value`);
+			throw new Error(`${label}Every entry in 'Levels' needs a non-empty 'Description'`);
 		}
 		return entry.level.trim();
 	});

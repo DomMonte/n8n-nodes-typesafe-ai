@@ -69,6 +69,17 @@ describe('parseState', () => {
 		expect(() => parseState(undefined, 'auto')).toThrow("'State' cannot be empty");
 		expect(() => parseState(null, 'auto')).toThrow("'State' cannot be empty");
 	});
+
+	it('coerces a non-string scalar to text in auto and text mode', () => {
+		expect(parseState(42, 'auto')).toBe('42');
+		expect(parseState(true, 'text')).toBe('true');
+	});
+
+	it('rejects a non-string scalar in json mode', () => {
+		expect(() => parseState(42, 'json')).toThrow(
+			"'State' must be a JSON object or array when 'State Format' is JSON",
+		);
+	});
 });
 
 describe('buildQuestion', () => {
@@ -168,7 +179,7 @@ describe('buildQuestion', () => {
 				instructions: 'Q',
 				scoreLevels: [{ level: 'A' }, { level: '' }],
 			}),
-		).toThrow("Every entry in 'Levels' needs a non-empty value");
+		).toThrow("Every entry in 'Levels' needs a non-empty 'Description'");
 	});
 
 	it('prefixes messages with the label when given', () => {

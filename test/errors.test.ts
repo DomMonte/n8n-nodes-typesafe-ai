@@ -1,4 +1,4 @@
-import type { INode } from 'n8n-workflow';
+import type { INode, JsonObject } from 'n8n-workflow';
 import { NodeApiError, NodeOperationError } from 'n8n-workflow';
 import { describe, expect, it } from 'vitest';
 
@@ -64,6 +64,29 @@ describe('getApiErrorDetail', () => {
 
 	it('returns undefined when there is no body', () => {
 		expect(getApiErrorDetail(new Error('x'))).toBeUndefined();
+	});
+
+	it('reads the body from a NodeApiError built the way n8n-core builds it (context.data)', () => {
+		const axiosLike = Object.assign(new Error('Request failed with status code 422'), {
+			name: 'AxiosError',
+			response: {
+				status: 422,
+				data: { detail: [{ loc: ['body', 'questions', 'q', 'criteria'], msg: 'field required' }] },
+			},
+		});
+		const wrapped = new NodeApiError(node, axiosLike as unknown as JsonObject);
+		expect(getApiErrorDetail(wrapped)).toBe(
+			'[{"loc":["body","questions","q","criteria"],"msg":"field required"}]',
+		);
+	});
+
+	it('prefers the body over a generic description', () => {
+		expect(
+			getApiErrorDetail({
+				description: 'Request failed with status code 422',
+				context: { data: { error: 'bad state' } },
+			}),
+		).toBe('bad state');
 	});
 });
 
@@ -132,5 +155,21 @@ describe('toNodeError', () => {
 	it('keeps an existing NodeOperationError', () => {
 		const original = new NodeOperationError(node, 'already wrapped');
 		expect(toNodeError(node, original, 4)).toBe(original);
+	});
+
+	it('surfaces the 422 body detail through a real n8n-wrapped error', () => {
+		const axiosLike = Object.assign(new Error('Request failed with status code 422'), {
+			name: 'AxiosError',
+			response: {
+				status: 422,
+				data: { detail: [{ loc: ['body', 'questions', 'q', 'criteria'], msg: 'field required' }] },
+			},
+		});
+		const wrapped = new NodeApiError(node, axiosLike as unknown as JsonObject);
+		const error = toNodeError(node, wrapped, 0);
+		expect(error.message).toBe('TypeSafe AI could not validate the request');
+		expect(error.description).toBe(
+			'[{"loc":["body","questions","q","criteria"],"msg":"field required"}]',
+		);
 	});
 });

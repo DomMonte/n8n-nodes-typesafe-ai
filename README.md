@@ -9,6 +9,7 @@ TypeSafe's System One models (Jev) answer small, typed questions about your data
 - [Operations](#operations)
 - [Output reference](#output-reference)
 - [Rate limits and retries](#rate-limits-and-retries)
+- [AI Agent tool](#ai-agent-tool)
 - [Resources](#resources)
 
 ## Installation
@@ -51,7 +52,7 @@ n8n Cloud users can install community nodes only after the package is verified b
 
 ## Credentials
 
-Create a **TypeSafe AI API** credential with your API key from the [TypeSafe dashboard](https://typesafe.ai). The key is sent as a `Authorization: Bearer` header. Use the credential's **Test** button to confirm it works (it calls `GET /v1/models`).
+Create a **TypeSafe AI API** credential with your API key from the [TypeSafe dashboard](https://typesafe.ai). The key is sent as an `Authorization: Bearer` header. Use the credential's **Test** button to confirm it works (it calls `GET /v1/models`).
 
 ## Operations
 
@@ -99,7 +100,7 @@ Example — Instructions: `Which team should handle this?` Choices: `billing`, `
 
 Rates the state against ordered levels (lowest first) and returns a probability-weighted score that can land between levels.
 
-- **Levels**: at least two, ordered from lowest to highest.
+- **Levels**: at least two, each a short description, ordered from lowest to highest.
 
 Example — Instructions: `How frustrated is the customer?` Levels: `Calm`, `Frustrated`, `Very angry`
 

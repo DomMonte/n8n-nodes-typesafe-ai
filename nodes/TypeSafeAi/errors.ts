@@ -28,12 +28,15 @@ export function getHttpStatus(error: unknown): number | undefined {
 export function getApiErrorDetail(error: unknown): string | undefined {
 	const obj = asObject(error);
 	if (!obj) return undefined;
-	const body = asObject(asObject(obj.response)?.data);
-	const candidate = body?.detail ?? body?.error ?? body?.message ?? obj.description;
-	if (candidate === undefined || candidate === null) {
-		return obj.cause ? getApiErrorDetail(obj.cause) : undefined;
+	// n8n's NodeApiError keeps the HTTP body under context.data; raw axios errors under response.data
+	const body = asObject(asObject(obj.response)?.data) ?? asObject(asObject(obj.context)?.data);
+	const fromBody = body?.detail ?? body?.error ?? body?.message;
+	if (fromBody !== undefined && fromBody !== null) {
+		return typeof fromBody === 'string' ? fromBody : JSON.stringify(fromBody);
 	}
-	return typeof candidate === 'string' ? candidate : JSON.stringify(candidate);
+	const fromCause = obj.cause ? getApiErrorDetail(obj.cause) : undefined;
+	if (fromCause !== undefined) return fromCause;
+	return typeof obj.description === 'string' ? obj.description : undefined;
 }
 
 const RETRY_HINT = "Enable 'Retry On Fail' in the node settings with a wait of at least 1 second";

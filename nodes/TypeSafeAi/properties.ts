@@ -62,13 +62,13 @@ const scoreLevelsProperty = (
 			name: 'values',
 			values: [
 				{
-					displayName: 'Level',
+					displayName: 'Description',
 					name: 'level',
 					type: 'string',
 					default: '',
 					required: true,
 					placeholder: 'e.g. Calm',
-					description: 'A concrete description of this level',
+					description: 'A concrete description of this level, ordered from lowest to highest',
 				},
 			],
 		},
