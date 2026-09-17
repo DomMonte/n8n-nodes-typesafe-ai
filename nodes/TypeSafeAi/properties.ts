@@ -7,28 +7,28 @@ const QUESTION_OPS = ['askChoice', 'askNoul', 'askScore', 'evaluate'];
 const choiceOptionsProperty = (
 	displayOptions: INodeProperties['displayOptions'],
 ): INodeProperties => ({
-	displayName: 'Options',
+	displayName: 'Choices',
 	name: 'choiceOptions',
 	type: 'fixedCollection',
 	typeOptions: { multipleValues: true, sortable: true },
-	placeholder: 'Add Option',
+	placeholder: 'Add Choice',
 	default: {},
 	required: true,
-	description: 'The set of options the model chooses from',
+	description: 'The set of choices the model picks from',
 	displayOptions,
 	options: [
 		{
-			displayName: 'Values',
+			displayName: 'Choice',
 			name: 'values',
 			values: [
 				{
-					displayName: 'Option',
+					displayName: 'Value',
 					name: 'option',
 					type: 'string',
 					default: '',
 					required: true,
 					placeholder: 'e.g. billing',
-					description: 'The option key returned in the answer',
+					description: 'The value returned in the answer when this choice is selected',
 				},
 				{
 					displayName: 'Description',
@@ -58,7 +58,7 @@ const scoreLevelsProperty = (
 	displayOptions,
 	options: [
 		{
-			displayName: 'Values',
+			displayName: 'Level',
 			name: 'values',
 			values: [
 				{
@@ -233,7 +233,7 @@ export const typeSafeAiProperties: INodeProperties[] = [
 		},
 		options: [
 			{
-				displayName: 'Values',
+				displayName: 'Question',
 				name: 'values',
 				values: [
 					{

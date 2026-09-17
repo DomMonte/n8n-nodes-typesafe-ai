@@ -47,9 +47,9 @@ Example — State: `Help! My payouts have been failing for 3 days.` Instructions
 
 Picks one option from a set you define and returns the full probability distribution plus a confidence value.
 
-- **Options**: one row per option (`Option` key + optional `Description` rubric).
+- **Choices**: one row per choice (`Value` key + optional `Description` rubric).
 
-Example — Instructions: `Which team should handle this?` Options: `billing`, `technical`, `sales`
+Example — Instructions: `Which team should handle this?` Choices: `billing`, `technical`, `sales`
 
 ```json
 {

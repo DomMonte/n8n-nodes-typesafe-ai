@@ -115,8 +115,9 @@ Request question: `{ type: 'noul', instructions, criteria? }`.
 
 ### Ask Choice (`askChoice`)
 
-- **Options** (`choiceOptions`, fixedCollection, `multipleValues: true`, required,
-  button "Add Option"): entries `option` (string, required, placeholder
+- **Choices** (`choiceOptions`, fixedCollection, `multipleValues: true`, required,
+  button "Add Choice", entries shown as "Choice N"): entries `option` (displayed as
+  "Value"; string, required, placeholder
   `e.g. billing`) and `description` (string, optional, placeholder
   `e.g. Payments, invoicing, refunds`).
 - Validation: at least one option; option keys unique and non-empty.

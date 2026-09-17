@@ -135,14 +135,14 @@ describe('buildQuestion', () => {
 
 	it('rejects a choice question with no options', () => {
 		expect(() => buildQuestion({ type: 'choice', instructions: 'Q', choiceOptions: [] })).toThrow(
-			"Add at least one entry to 'Options' for a Choice question",
+			"Add at least one entry to 'Choices' for a Choice question",
 		);
 	});
 
 	it('rejects a choice option with an empty key', () => {
 		expect(() =>
 			buildQuestion({ type: 'choice', instructions: 'Q', choiceOptions: [{ option: ' ' }] }),
-		).toThrow("Every entry in 'Options' needs a non-empty 'Option' value");
+		).toThrow("Every entry in 'Choices' needs a non-empty 'Value'");
 	});
 
 	it('rejects duplicate choice options', () => {
@@ -152,7 +152,7 @@ describe('buildQuestion', () => {
 				instructions: 'Q',
 				choiceOptions: [{ option: 'a' }, { option: 'a' }],
 			}),
-		).toThrow("'Options' contains the duplicate option 'a'");
+		).toThrow("'Choices' contains the duplicate value 'a'");
 	});
 
 	it('rejects a score question with fewer than two levels', () => {
@@ -253,7 +253,7 @@ describe('buildFormQuestions', () => {
 	it('prefixes per-question validation errors with the id', () => {
 		expect(() =>
 			buildFormQuestions([{ id: 'dept', type: 'choice', instructions: 'Q', choiceOptions: [] }]),
-		).toThrow("Question 'dept': Add at least one entry to 'Options' for a Choice question");
+		).toThrow("Question 'dept': Add at least one entry to 'Choices' for a Choice question");
 	});
 });
 

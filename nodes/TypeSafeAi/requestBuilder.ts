@@ -92,16 +92,16 @@ function buildNoul(spec: QuestionSpec): NoulQuestion {
 function buildChoice(spec: QuestionSpec, label: string): ChoiceQuestion {
 	const entries = spec.choiceOptions ?? [];
 	if (entries.length === 0) {
-		throw new Error(`${label}Add at least one entry to 'Options' for a Choice question`);
+		throw new Error(`${label}Add at least one entry to 'Choices' for a Choice question`);
 	}
 	const criteria: Record<string, string | null> = {};
 	for (const entry of entries) {
 		if (!nonBlank(entry.option)) {
-			throw new Error(`${label}Every entry in 'Options' needs a non-empty 'Option' value`);
+			throw new Error(`${label}Every entry in 'Choices' needs a non-empty 'Value'`);
 		}
 		const key = entry.option.trim();
 		if (key in criteria) {
-			throw new Error(`${label}'Options' contains the duplicate option '${key}'`);
+			throw new Error(`${label}'Choices' contains the duplicate value '${key}'`);
 		}
 		criteria[key] = nonBlank(entry.description) ? entry.description.trim() : null;
 	}
