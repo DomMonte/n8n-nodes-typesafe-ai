@@ -166,9 +166,9 @@ The node is marked usable as a tool, so an AI Agent can call it directly. Mark a
 
 ## Author and support
 
-Built by [Domenic Monte](https://montedev.com.au) — see more of my work at [montedev.com.au](https://montedev.com.au).
+Built by [Domenic Monteleone](https://montedev.com.au) — see more of my work at [montedev.com.au](https://montedev.com.au).
 
-If this node saves you time and you'd like to support its development, you can [donate via PayPal](https://www.paypal.com/donate?business=domenic%40montedev.com.au) (PayPal address: `domenic@montedev.com.au`). Thank you!
+If this node saves you time and you'd like to support its development, you can [donate via PayPal](https://paypal.me/DomMonteFUTAPI). Thank you!
 
 ## License
 
