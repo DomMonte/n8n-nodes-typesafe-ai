@@ -71,7 +71,7 @@ Constants: `BASE_URL = 'https://api.typesafe.ai'`, `DEFAULT_MODEL = 'jev-latest'
 - Display name **TypeSafe AI**, `group: ['transform']`, `version: 1`,
   `usableAsAITool: true`, `subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}'`,
   one input, one output, credential `typeSafeAiApi` required.
-- Codex `.node.json`: categories `["AI", "Development"]`, subcategories `{ "AI": ["Miscellaneous"] }` (an AI-category node needs an AI subcategory or the n8n picker hides it), search aliases, docs links to
+- Codex `.node.json`: categories `["AI", "Development"]`, subcategories `{ "AI": ["Miscellaneous", "Root Nodes"] }` (n8n's picker only lists AI-category nodes whose AI subcategories include "Root Nodes"), search aliases, docs links to
   `https://docs.typesafe.ai` and the package README.
 
 ### Resources and operations

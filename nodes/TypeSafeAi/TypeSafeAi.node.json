@@ -4,7 +4,7 @@
 	"codexVersion": "1.0",
 	"categories": ["AI", "Development"],
 	"subcategories": {
-		"AI": ["Miscellaneous"]
+		"AI": ["Miscellaneous", "Root Nodes"]
 	},
 	"alias": ["TypeSafe", "Jev", "System One", "classify", "classification", "score", "yes no", "noul", "choice", "probability", "confidence"],
 	"resources": {
