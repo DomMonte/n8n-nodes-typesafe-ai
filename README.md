@@ -13,7 +13,41 @@ TypeSafe's System One models (Jev) answer small, typed questions about your data
 
 ## Installation
 
-Follow the [community nodes installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) and install `n8n-nodes-typesafe-ai`.
+The package is published on npm as `n8n-nodes-typesafe-ai`. Both methods below follow n8n's [community nodes installation guide](https://docs.n8n.io/integrations/community-nodes/installation-and-management/).
+
+### Install from the n8n GUI (recommended)
+
+Only users with an Owner or Admin role can install community nodes on a self-hosted instance.
+
+1. Go to **Settings** > **Community Nodes**.
+2. Select **Install**.
+3. Enter `n8n-nodes-typesafe-ai` in **Enter npm package name**. To pin a version, append it, for example `n8n-nodes-typesafe-ai@0.1.0`.
+4. Agree to the [risks](https://docs.n8n.io/integrations/community-nodes/risks/) of using community nodes: select **I understand the risks of installing unverified code from a public source**.
+5. Select **Install**. n8n installs the node and returns to the **Community Nodes** list.
+
+The **TypeSafe AI** node then appears in the node panel. Upgrades, downgrades and uninstalls are managed from the same **Settings** > **Community Nodes** page — see [GUI installation](https://docs.n8n.io/integrations/community-nodes/installation-and-management/gui-installation/).
+
+### Manual installation (self-hosted)
+
+Use this if your instance runs in queue mode or you prefer installing from the shell.
+
+Access your n8n shell (for Docker):
+
+```sh
+docker exec -it n8n sh
+```
+
+Create `~/.n8n/nodes` if it doesn't already exist, navigate into it, and install the package:
+
+```sh
+mkdir -p ~/.n8n/nodes
+cd ~/.n8n/nodes
+npm i n8n-nodes-typesafe-ai
+```
+
+Then restart n8n. To upgrade later, run `npm update n8n-nodes-typesafe-ai` in the same directory and restart; to remove it, run `npm uninstall n8n-nodes-typesafe-ai`. Full details: [Manual installation](https://docs.n8n.io/integrations/community-nodes/installation-and-management/manual-installation/).
+
+n8n Cloud users can install community nodes only after the package is verified by n8n; until then this package is available on self-hosted instances only.
 
 ## Credentials
 
