@@ -1,0 +1,18 @@
+{
+	"node": "n8n-nodes-typesafe-ai.typeSafeAi",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["AI"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://github.com/DomMonte/n8n-nodes-typesafe-ai#credentials"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://docs.typesafe.ai"
+			}
+		]
+	}
+}

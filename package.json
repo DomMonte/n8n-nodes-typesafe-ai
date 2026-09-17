@@ -40,7 +40,7 @@
 			"dist/credentials/TypeSafeAiApi.credentials.js"
 		],
 		"nodes": [
-			"dist/nodes/Example/Example.node.js"
+			"dist/nodes/TypeSafeAi/TypeSafeAi.node.js"
 		]
 	},
 	"devDependencies": {
