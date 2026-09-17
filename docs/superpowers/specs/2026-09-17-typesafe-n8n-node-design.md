@@ -145,7 +145,7 @@ Request question: `{ type: 'score', instructions, criteria: [level, ...] }`.
   - `choiceOptions` (fixedCollection as in Ask Choice; shown when `type === choice`)
   - `scoreLevels` (fixedCollection as in Ask Score; shown when `type === score`)
 - JSON mode: **Questions (JSON)** (`questionsJson`, `type: 'json'`, required,
-  default `{}`). Must be a JSON object whose values are Question objects; passed
+  default: a one-question noul example so the expected shape is visible). Must be a JSON object whose values are Question objects; passed
   through verbatim after a shallow check that each value has a `type` in
   {noul, choice, score} and an `instructions` field.
 - Validation: at least one question; IDs unique and non-empty; per-type rules as above.
