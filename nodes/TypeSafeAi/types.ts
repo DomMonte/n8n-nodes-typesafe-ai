@@ -111,8 +111,7 @@ export interface RawFormQuestion {
 	id: string;
 	type: QuestionType;
 	instructions: string;
-	trueMeans?: string;
-	falseMeans?: string;
+	noulCriteria?: { trueMeans?: string; falseMeans?: string };
 	choiceOptions?: { values?: ChoiceOptionEntry[] };
 	scoreLevels?: { values?: ScoreLevelEntry[] };
 }

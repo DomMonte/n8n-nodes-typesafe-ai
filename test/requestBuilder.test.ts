@@ -187,8 +187,7 @@ describe('fromFormEntry', () => {
 				instructions: 'Which?',
 				choiceOptions: { values: [{ option: 'a', description: 'A' }] },
 				scoreLevels: { values: [{ level: 'x' }] },
-				trueMeans: 't',
-				falseMeans: 'f',
+				noulCriteria: { trueMeans: 't', falseMeans: 'f' },
 			}),
 		).toEqual({
 			id: 'dept',

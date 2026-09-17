@@ -148,8 +148,8 @@ export function fromFormEntry(raw: RawFormQuestion): QuestionSpec & { id: string
 		id: raw.id,
 		type: raw.type,
 		instructions: raw.instructions,
-		trueMeans: raw.trueMeans,
-		falseMeans: raw.falseMeans,
+		trueMeans: raw.noulCriteria?.trueMeans,
+		falseMeans: raw.noulCriteria?.falseMeans,
 		choiceOptions: raw.choiceOptions?.values ?? [],
 		scoreLevels: raw.scoreLevels?.values ?? [],
 	};

@@ -137,11 +137,13 @@ Request question: `{ type: 'score', instructions, criteria: [level, ...] }`.
 
 - **Questions Input** (`questionsInput`, options `form` | `json`, default `form`).
 - Form mode: **Questions** (`questions`, fixedCollection, `multipleValues: true`,
-  button "Add Question"). Each entry:
+  button "Add Question"). Each entry, in this order (`id`, `type`, `instructions`,
+  `noulCriteria`, `choiceOptions`, `scoreLevels`):
   - `id` (Question ID, string, required, placeholder `e.g. is_urgent`)
   - `type` (options: Yes/No `noul`, Choice `choice`, Score `score`, default `noul`)
   - `instructions` (string, multiline, required)
-  - `trueMeans`, `falseMeans` (shown when `type === noul`, optional)
+  - `noulCriteria` (collection with `trueMeans` / `falseMeans`, shown when `type === noul`,
+    optional — same shape as Ask Yes/No)
   - `choiceOptions` (fixedCollection as in Ask Choice; shown when `type === choice`)
   - `scoreLevels` (fixedCollection as in Ask Score; shown when `type === score`)
 - JSON mode: **Questions (JSON)** (`questionsJson`, `type: 'json'`, required,

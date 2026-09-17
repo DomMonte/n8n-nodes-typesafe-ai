@@ -107,8 +107,12 @@ export class TypeSafeAi implements INodeType {
 				});
 			} catch (error) {
 				if (this.continueOnFail()) {
+					const nodeError = toNodeError(this.getNode(), error, i);
 					returnData.push({
-						json: { error: (error as Error).message } as IDataObject,
+						json: {
+							error: nodeError.message,
+							...(nodeError.description ? { description: nodeError.description } : {}),
+						} as IDataObject,
 						pairedItem: { item: i },
 					});
 					continue;
