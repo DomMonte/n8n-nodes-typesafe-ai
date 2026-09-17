@@ -11,6 +11,7 @@ TypeSafe's System One models (Jev) answer small, typed questions about your data
 - [Rate limits and retries](#rate-limits-and-retries)
 - [AI Agent tool](#ai-agent-tool)
 - [Resources](#resources)
+- [Author and support](#author-and-support)
 
 ## Installation
 
@@ -162,6 +163,12 @@ The node is marked usable as a tool, so an AI Agent can call it directly. Mark a
 - [HTTP API reference](https://docs.typesafe.ai/api)
 - [Question primitives](https://docs.typesafe.ai/primitives)
 - [n8n community nodes documentation](https://docs.n8n.io/integrations/community-nodes/)
+
+## Author and support
+
+Built by [Domenic Monte](https://montedev.com.au) — see more of my work at [montedev.com.au](https://montedev.com.au).
+
+If this node saves you time and you'd like to support its development, you can [donate via PayPal](https://www.paypal.com/donate?business=domenic%40montedev.com.au) (PayPal address: `domenic@montedev.com.au`). Thank you!
 
 ## License
 
