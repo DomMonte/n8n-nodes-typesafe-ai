@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-typesafe-ai",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "n8n community node for the TypeSafe AI System One API: ask typed yes/no, choice and score questions about your data and get calibrated probabilities back",
 	"license": "MIT",
 	"homepage": "https://github.com/DomMonte/n8n-nodes-typesafe-ai",

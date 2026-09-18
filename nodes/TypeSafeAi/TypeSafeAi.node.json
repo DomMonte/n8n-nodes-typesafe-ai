@@ -2,10 +2,7 @@
 	"node": "n8n-nodes-typesafe-ai.typeSafeAi",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
-	"categories": ["AI", "Development"],
-	"subcategories": {
-		"AI": ["Miscellaneous", "Root Nodes"]
-	},
+	"categories": ["Development"],
 	"alias": ["TypeSafe", "Jev", "System One", "classify", "classification", "score", "yes no", "noul", "choice", "probability", "confidence"],
 	"resources": {
 		"credentialDocumentation": [
